@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chimmychuot 🐹🐭</title>
+<style>
+  :root{
+    --pink:#ff6fa5;
+    --purple:#a06bff;
+    --yellow:#ffd93d;
+    --blue:#5ec8ff;
+    --green:#5cf29a;
+    --orange:#ff9f45;
+    --bg:#fff0f6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Comic Sans MS','Segoe UI',sans-serif;
+    background: linear-gradient(135deg,#fff0f6,#eef6ff,#fffbea);
+    background-size:400% 400%;
+    animation: bgshift 18s ease infinite;
+    color:#3a2a4a;
+    overflow-x:hidden;
+  }
+  @keyframes bgshift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* floating hearts background */
+  .heart{
+    position:fixed;
+    top:110vh;
+    font-size:28px;
+    opacity:0.8;
+    animation: floatUp linear infinite;
+    z-index:0;
+    pointer-events:none;
+    user-select:none;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) rotate(0deg); opacity:0.9;}
+    100%{transform:translateY(-120vh) rotate(360deg); opacity:0;}
+  }
+
+  section{
+    position:relative;
+    padding:70px 20px;
+    z-index:1;
+  }
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .couple-name{
+    font-size:clamp(2.5rem, 8vw, 5.5rem);
+    font-weight:900;
+    background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue), var(--orange), var(--pink));
+    background-size: 300% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation: rainbow 4s linear infinite, pop 1.2s ease;
+    letter-spacing:2px;
+  }
+  @keyframes rainbow{
+    to{background-position:300% center;}
+  }
+  @keyframes pop{
+    0%{transform:scale(0); }
+    60%{transform:scale(1.15);}
+    100%{transform:scale(1);}
+  }
+  .mice{
+    font-size:3rem;
+    margin:10px 0 20px;
+    animation: wiggle 1.5s ease-in-out infinite;
+  }
+  @keyframes wiggle{
+    0%,100%{transform:rotate(-8deg);}
+    50%{transform:rotate(8deg);}
+  }
+  .hero-sub{
+    font-size:clamp(1.1rem,3vw,1.6rem);
+    max-width:700px;
+    margin-top:10px;
+    line-height:1.6;
+    font-weight:700;
+    color:#5a3d6e;
+  }
+  .hero-sub2{
+    margin-top:18px;
+    font-size:clamp(1rem,2.6vw,1.3rem);
+    max-width:650px;
+    color:#7a4d9e;
+    font-weight:600;
+  }
+  .scroll-hint{
+    margin-top:50px;
+    font-size:1.2rem;
+    animation: bounce 1.5s infinite;
+  }
+  @keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(12px);}
+  }
+
+  /* COUNTERS */
+  .counters{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+    max-width:1000px;
+    margin:40px auto 0;
+  }
+  .counter-card{
+    background:#fff;
+    border:4px dashed var(--pink);
+    border-radius:24px;
+    padding:22px 28px;
+    min-width:260px;
+    box-shadow:8px 8px 0 var(--purple);
+    transform:rotate(-2deg);
+    transition:transform .3s;
+  }
+  .counter-card:nth-child(2){
+    border-color:var(--blue);
+    box-shadow:8px 8px 0 var(--orange);
+    transform:rotate(2deg);
+  }
+  .counter-card:hover{transform:scale(1.05) rotate(0deg);}
+  .counter-title{
+    font-size:1.1rem;
+    font-weight:800;
+    color:var(--purple);
+    margin-bottom:8px;
+  }
+  .counter-num{
+    font-size:2.6rem;
+    font-weight:900;
+    color:var(--pink);
+    text-shadow:2px 2px 0 #fff, 4px 4px 0 var(--yellow);
+  }
+  .counter-label{
+    font-size:.95rem;
+    color:#7a4d9e;
+    font-weight:600;
+  }
+
+  /* SECTION TITLES */
+  .section-title{
+    text-align:center;
+    font-size:clamp(1.8rem,5vw,3rem);
+    font-weight:900;
+    margin-bottom:12px;
+    position:relative;
+    display:inline-block;
+  }
+  .section-wrap{ text-align:center; margin-bottom:50px;}
+  .section-sub{
+    text-align:center;
+    font-size:1.1rem;
+    font-weight:700;
+    max-width:600px;
+    margin:0 auto 40px;
+    color:#7a4d9e;
+  }
+  .badge{
+    display:inline-block;
+    background:var(--yellow);
+    padding:4px 18px;
+    border-radius:30px;
+    font-size:.9rem;
+    font-weight:800;
+    color:#5a3d10;
+    margin-bottom:10px;
+    box-shadow:3px 3px 0 #e0a800;
+    transform:rotate(-3deg);
+  }
+
+  /* GALLERY GRID */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:26px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .photo-card{
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    background:#fff;
+    padding:10px;
+    box-shadow:0 8px 20px rgba(160,107,255,.25);
+    transition:transform .35s, box-shadow .35s;
+  }
+  .photo-card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    border-radius:14px;
+    display:block;
+  }
+  .photo-card:nth-child(odd){transform:rotate(-3deg);}
+  .photo-card:nth-child(even){transform:rotate(3deg);}
+  .photo-card:hover{
+    transform:scale(1.08) rotate(0deg) !important;
+    box-shadow:0 14px 30px rgba(255,111,165,.45);
+    z-index:5;
+  }
+  .photo-tag{
+    text-align:center;
+    font-weight:800;
+    margin-top:8px;
+    color:var(--purple);
+    font-size:.95rem;
+  }
+
+  #mucA .photo-card{border:4px solid var(--pink);}
+  #mucB .photo-card{border:4px solid var(--blue);}
+  #mucC .photo-card{border:4px solid var(--green);}
+
+  /* LETTER */
+  .letter-wrap{
+    max-width:750px;
+    margin:0 auto;
+    background:#fffdf5;
+    border-radius:26px;
+    padding:45px 35px;
+    box-shadow:0 12px 0 var(--purple), 0 20px 30px rgba(0,0,0,.15);
+    position:relative;
+    transform:rotate(-1deg);
+  }
+  .letter-wrap::before{
+    content:"💌";
+    position:absolute;
+    top:-35px; left:50%;
+    transform:translateX(-50%);
+    font-size:3rem;
+    animation: wiggle 2s ease-in-out infinite;
+  }
+  .letter-text{
+    font-size:1.15rem;
+    line-height:2;
+    color:#4a3560;
+    font-weight:600;
+  }
+  .letter-text b{color:var(--pink);}
+
+  /* FINALE */
+  .finale{
+    text-align:center;
+    padding:100px 20px 120px;
+  }
+  .finale-title{
+    font-size:clamp(2rem,6vw,4rem);
+    font-weight:900;
+    background: linear-gradient(90deg, var(--purple), var(--pink), var(--orange));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:20px;
+  }
+  .finale-text{
+    max-width:650px;
+    margin:0 auto;
+    font-size:1.2rem;
+    font-weight:700;
+    color:#5a3d6e;
+    line-height:1.8;
+  }
+  .btn-love{
+    margin-top:35px;
+    padding:16px 40px;
+    font-size:1.2rem;
+    font-weight:900;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(90deg,var(--pink),var(--purple));
+    color:white;
+    cursor:pointer;
+    box-shadow:0 8px 0 #7a3fcf;
+    transition:transform .15s;
+  }
+  .btn-love:active{transform:translateY(8px); box-shadow:none;}
+
+  #confetti-canvas{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    z-index:999;
+  }
+
+  footer{
+    text-align:center;
+    padding:30px;
+    font-size:.9rem;
+    color:#9a7ab5;
+    font-weight:600;
+  }
+
+  @media (max-width:600px){
+    .counter-card{min-width:80%;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="mice">🐹💗🐭</div>
+  <div class="couple-name">chimmychuot</div>
+  <p class="hero-sub">Zị là tui với em yêu đã được nửa năm rồiiii yayyyyyyyyy 🎉🎉🎉</p>
+  <p class="hero-sub2">Nhưng tất nhiên sẽ không chỉ có nửa năm đâu — anh mong được ở bên em iu <b>cả đờiii</b> 💜<br>
+  Chào mừng em iu đến với thế giới ghi lại tình yêu của đôi ta nha 🌈</p>
+
+  <div class="counters">
+    <div class="counter-card">
+      <div class="counter-title">💕 Yêu nhau được</div>
+      <div class="counter-num" id="loveDays">0</div>
+      <div class="counter-label">ngày rồi đó nha (từ 01/01/2026)</div>
+    </div>
+    <div class="counter-card">
+      <div class="counter-title">🎂 Sinh nhật Sơn còn</div>
+      <div class="counter-num" id="bdayCountdown">0</div>
+      <div class="counter-label">ngày nữa thôi (05/07)</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">👇 kéo xuống xem tiếp nè 👇</div>
+</section>
+
+<!-- MUC 1 -->
+<section id="mucA">
+  <div class="section-wrap">
+    <div class="badge">MỤC 1</div>
+    <h2 class="section-title" style="color:var(--pink)">em iu Sơn của tuiii 🐹✨</h2>
+    <p class="section-sub">Embe nhà tui đó cả nhà: xinh đẹp — to đùng — và đáng iuuuu. Đây là nơi showcase vẻ đẹp của em 💗</p>
+  </div>
+  <div class="gallery">
+    <div class="photo-card"><img src="images/img2.jpg" alt="Sơn"><div class="photo-tag">to đùng phiên bản gương 💪</div></div>
+    <div class="photo-card"><img src="images/img5.jpg" alt="Sơn"><div class="photo-tag">soái ca choàng khăn ✨</div></div>
+    <div class="photo-card"><img src="images/img4.jpg" alt="Sơn"><div class="photo-tag">nhìn nghiêng cute xỉu 🥹</div></div>
+  </div>
+</section>
+
+<!-- MUC 2 -->
+<section id="mucB">
+  <div class="section-wrap">
+    <div class="badge" style="background:var(--blue); box-shadow:3px 3px 0 #1e7fb0; color:#0a3a55;">MỤC 2</div>
+    <h2 class="section-title" style="color:var(--blue)">khi em iu dỗiii 😤💧</h2>
+    <p class="section-sub">TRỜI ƠI lúc dỗi tui chỉ thấy ẻm cute hoiiiii 🥺 nhưng cũng biết là phải đi dỗ ẻm liền á</p>
+  </div>
+  <div class="gallery">
+    <div class="photo-card"><img src="images/img6.jpg" alt="dỗi"><div class="photo-tag">liếc xéo nhẹ 😏</div></div>
+    <div class="photo-card"><img src="images/img8.jpg" alt="dỗi"><div class="photo-tag">giận hờn nằm quay mặt 🙄</div></div>
+    <div class="photo-card"><img src="images/img1.jpg" alt="dỗi"><div class="photo-tag">giả bộ hờn xíu thôiii 😤</div></div>
+  </div>
+</section>
+
+<!-- MUC 3 -->
+<section id="mucC">
+  <div class="section-wrap">
+    <div class="badge" style="background:var(--green); box-shadow:3px 3px 0 #1e9f60; color:#0a4a2a;">MỤC 3</div>
+    <h2 class="section-title" style="color:#2fbf71">khi em iu vuiiii 😆🍚</h2>
+    <p class="section-sub">Hổng còn gì làm anh thấy vui hơn là được thấy em vui, em cười và ăn ngonnnn. EM HÃY GIỮ NỤ CƯỜI NHÉ 🥰</p>
+  </div>
+  <div class="gallery">
+    <div class="photo-card"><img src="images/img7.jpg" alt="vui"><div class="photo-tag">cười tít cả mắt 😄</div></div>
+    <div class="photo-card"><img src="images/img9.jpg" alt="vui"><div class="photo-tag">cười duyên trên gối 🛏️</div></div>
+    <div class="photo-card"><img src="images/img3.jpg" alt="vui"><div class="photo-tag">cười cùng người iu 💞</div></div>
+  </div>
+</section>
+
+<!-- LETTER -->
+<section>
+  <div class="section-wrap">
+    <div class="badge" style="background:var(--orange); box-shadow:3px 3px 0 #b05a10; color:#4a2200;">THƯ TÌNH</div>
+    <h2 class="section-title" style="color:var(--orange)">gửi Sơn của anh 💌</h2>
+  </div>
+  <div class="letter-wrap">
+    <p class="letter-text">
+      6 tháng rồi đó Sơn ơi 🐹🐭 Từ ngày <b>chimmychuot</b> chính thức "chốt đơn" tới giờ, anh chưa ngày nào hết thấy may vì có em.
+      Em cute y chang cái tên gọi ở nhà, nhưng lại là người duy nhất khiến anh vừa muốn cắn vừa muốn ôm suốt 24/7 🐭💗<br><br>
+      Cảm ơn em vì đã luôn ở đó, dù anh có "khùng" cỡ nào đi nữa. Sinh nhật này, chúc con chuột nhỏ của anh mãi cute,
+      mãi được yêu chiều (bởi anh) và mãi là người anh muốn giữ lâu dài nhất 🎂💗
+    </p>
+  </div>
+</section>
+
+<!-- FINALE -->
+<section class="finale">
+  <div class="finale-title">HAPPY 6 MONTHS &<br>HAPPY BIRTHDAY SƠN 🎉🎂</div>
+  <p class="finale-text">
+    Dạ vưng, nhân dịp nửa năm và sinh nhật lần thứ <b style="color:var(--pink)">23</b> của em,
+    anh yêu xin chúc em sẽ mãi ở bên anh iuuuuuuuuuuuuu 💜🐹🐭
+  </p>
+  <button class="btn-love" onclick="burstConfetti()">Bấm vào đây nè 🎉</button>
+</section>
+
+<footer>made with 💗 by chimmychuot • since 01.01.2026</footer>
+
+<script>
+  /* ===== Floating hearts background ===== */
+  const heartsEmojis = ["💗","💖","💕","🐭","🐹","✨","💜"];
+  function spawnHeart(){
+    const h = document.createElement('div');
+    h.classList.add('heart');
+    h.textContent = heartsEmojis[Math.floor(Math.random()*heartsEmojis.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.fontSize = (16 + Math.random()*26) + 'px';
+    const duration = 6 + Math.random()*8;
+    h.style.animationDuration = duration + 's';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), duration*1000);
+  }
+  setInterval(spawnHeart, 500);
+
+  /* ===== Counters ===== */
+  const loveStart = new Date(2026,0,1,0,0,0); // 1/1/2026
+  const bday = new Date(2026,6,5,0,0,0); // 5/7 (tháng 6 index = tháng 7)
+
+  function updateCounters(){
+    const now = new Date();
+
+    // days in love
+    let diffLove = Math.floor((now - loveStart) / (1000*60*60*24));
+    if(diffLove < 0) diffLove = 0;
+    document.getElementById('loveDays').textContent = diffLove;
+
+    // countdown to birthday (next occurrence)
+    let nextBday = new Date(now.getFullYear(), 6, 5);
+    if(now > nextBday){
+      nextBday = new Date(now.getFullYear()+1, 6, 5);
+    }
+    let diffBday = Math.ceil((nextBday - now) / (1000*60*60*24));
+    document.getElementById('bdayCountdown').textContent = diffBday;
+  }
+  updateCounters();
+  setInterval(updateCounters, 1000*60*30);
+
+  /* ===== Confetti burst ===== */
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  let particles = [];
+  const colors = ['#ff6fa5','#a06bff','#ffd93d','#5ec8ff','#5cf29a','#ff9f45'];
+
+  function burstConfetti(){
+    for(let i=0;i<140;i++){
+      particles.push({
+        x: canvas.width/2,
+        y: canvas.height/2,
+        vx: (Math.random()-0.5)*14,
+        vy: (Math.random()-1.5)*14,
+        size: 4+Math.random()*6,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        life: 100+Math.random()*40,
+        rot: Math.random()*360,
+        vrot: (Math.random()-0.5)*10
+      });
+    }
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.25;
+      p.life -= 1;
+      p.rot += p.vrot;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    });
+    particles = particles.filter(p=>p.life>0 && p.y < canvas.height+50);
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // small welcome burst
+  window.addEventListener('load', ()=> setTimeout(burstConfetti, 600));
+</script>
+
+</body>
+</html>
