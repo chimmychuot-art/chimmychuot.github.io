@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCQT – Chương 2: Cán Cân Thanh Toán Quốc Tế</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+:root{--bg:#0d1117;--s1:#161b22;--s2:#1e2530;--s3:#252d38;--bd:#30363d;--ac:#58a6ff;--ac2:#f78166;--ac3:#56d364;--ac4:#e3b341;--ac5:#bc8cff;--tx:#e6edf3;--mu:#8b949e;--tb:rgba(88,166,255,.13);--tr:rgba(247,129,102,.13);--tg:rgba(86,211,100,.13);--ty:rgba(227,179,65,.13);--tp:rgba(188,140,255,.13)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--tx);line-height:1.75;font-size:15px}
+header{background:linear-gradient(135deg,#0d1117,#1a2332);border-bottom:1px solid var(--bd);padding:28px 40px 22px;position:sticky;top:0;z-index:100}
+.hi{max-width:1020px;margin:0 auto}
+.stag{display:inline-block;background:var(--tb);color:var(--ac);border:1px solid rgba(88,166,255,.3);border-radius:20px;padding:3px 14px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px}
+h1{font-size:24px;font-weight:700}h1 span{color:var(--ac)}
+.sub{color:var(--mu);font-size:13.5px;margin-top:3px}
+.tabs{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+.tb2{background:var(--s1);border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:7px 15px;font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;font-weight:500}
+.tb2:hover{border-color:var(--ac);color:var(--ac)}
+.tb2.on{background:var(--tb);border-color:var(--ac);color:var(--ac)}
+main{max-width:1020px;margin:0 auto;padding:36px 40px 80px}
+.sec{display:none}.sec.on{display:block}
+.sec-title{font-size:20px;font-weight:700;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px}
+.sec-title::before{content:'';width:4px;height:26px;background:var(--ac);border-radius:2px;flex-shrink:0}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:26px 30px;margin-bottom:18px}
+.card:hover{border-color:#3d4754}
+.ct{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+.ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ib{background:var(--tb)}.ir{background:var(--tr)}.ig{background:var(--tg)}.iy{background:var(--ty)}.ip{background:var(--tp)}
+.card p{color:#c9d1d9;margin-bottom:10px}.card p:last-child{margin-bottom:0}
+.nb{border-radius:0 8px 8px 0;padding:11px 16px;margin:12px 0;font-size:14px;line-height:1.65}
+.nb-b{background:var(--tb);border-left:3px solid var(--ac);color:#b0d0f7}
+.nb-r{background:var(--tr);border-left:3px solid var(--ac2);color:#f7c0b0}
+.nb-g{background:var(--tg);border-left:3px solid var(--ac3);color:#b0f0bf}
+.nb-y{background:var(--ty);border-left:3px solid var(--ac4);color:#f0e0a0}
+.nb-p{background:var(--tp);border-left:3px solid var(--ac5);color:#d8bfff}
+.fm{background:#080c10;border:1px solid #2a3340;border-radius:8px;padding:13px 20px;font-family:'JetBrains Mono',monospace;font-size:13.5px;color:var(--ac3);margin:13px 0;text-align:center;line-height:2}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+th{background:var(--s2);color:var(--ac);padding:9px 13px;text-align:left;border-bottom:2px solid var(--bd);font-weight:600;font-size:13px}
+td{padding:8px 13px;border-bottom:1px solid #1e252e;color:#c9d1d9;vertical-align:top}
+tr:hover td{background:var(--s2)}
+.ba{display:inline-block;border-radius:5px;padding:2px 9px;font-size:11.5px;font-weight:600}
+.bb{background:var(--tb);color:var(--ac)}.br{background:var(--tr);color:var(--ac2)}.bg{background:var(--tg);color:var(--ac3)}.by{background:var(--ty);color:var(--ac4)}.bp{background:var(--tp);color:var(--ac5)}
+.sub-title{font-size:15px;font-weight:700;color:var(--ac4);margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--ac4)}
+code{font-family:'JetBrains Mono',monospace;background:#1e2530;padding:1px 6px;border-radius:4px;font-size:12.5px;color:var(--ac4)}
+/* STRUCTURE DIAGRAM */
+.bop-tree{margin:16px 0}
+.bop-root{background:linear-gradient(135deg,var(--tb),rgba(88,166,255,.05));border:1.5px solid var(--ac);border-radius:10px;padding:14px 20px;font-weight:700;font-size:15px;color:var(--ac);text-align:center;margin-bottom:12px}
+.bop-level1{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.bop-l1-item{border-radius:9px;padding:12px 14px;font-weight:600;font-size:13px;text-align:center}
+.bop-ca{background:var(--tg);border:1px solid var(--ac3);color:var(--ac3)}
+.bop-kfa{background:var(--tb);border:1px solid var(--ac);color:var(--ac)}
+.bop-err{background:var(--ty);border:1px solid var(--ac4);color:var(--ac4)}
+.bop-res{background:var(--tp);border:1px solid var(--ac5);color:var(--ac5)}
+.bop-sub{margin-top:8px}
+.bop-sub-item{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:8px 12px;font-size:12.5px;color:#c9d1d9;margin-bottom:5px}
+.bop-sub-item span{font-weight:600;margin-right:6px}
+/* ENTRY TABLE */
+.entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.entry-col{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:16px}
+.entry-col h4{font-size:14px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
+.entry-col.cr h4{color:var(--ac3)}.entry-col.dr h4{color:var(--ac2)}
+.entry-col ul{list-style:none}
+.entry-col li{font-size:13px;color:#c9d1d9;margin-bottom:8px;padding-left:18px;position:relative;line-height:1.5}
+.entry-col li::before{position:absolute;left:0}
+.entry-col.cr li::before{content:'＋';color:var(--ac3)}
+.entry-col.dr li::before{content:'－';color:var(--ac2)}
+/* FLOW */
+.flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:10px 0;font-size:13px}
+.fn{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:5px 12px;font-weight:500;line-height:1.4}
+.fa{color:var(--mu);font-size:15px}
+/* J-CURVE */
+.jcurve-wrap{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:20px;margin:14px 0}
+.jcurve-svg{display:block;margin:0 auto}
+/* QUIZ */
+.qc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:26px 30px;margin-bottom:18px}
+.qq{font-size:15.5px;font-weight:600;margin-bottom:15px;line-height:1.55}
+.qq .qn{color:var(--ac);font-family:'JetBrains Mono',monospace;font-size:12.5px;margin-bottom:6px;display:block;font-weight:400}
+.opts{display:flex;flex-direction:column;gap:9px}
+.ob{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:10px 17px;text-align:left;color:var(--tx);font-family:inherit;font-size:13.5px;cursor:pointer;transition:all .2s;line-height:1.5}
+.ob:hover:not(:disabled){border-color:var(--ac);background:var(--tb)}
+.ob.ok{border-color:var(--ac3);background:var(--tg);color:var(--ac3)}
+.ob.no{border-color:var(--ac2);background:var(--tr);color:var(--ac2)}
+.ex{display:none;margin-top:13px;padding:13px 17px;background:#080c10;border-radius:8px;border-left:3px solid var(--ac3);font-size:13.5px;color:#c9d1d9;line-height:1.7}
+.ex.sh{display:block}
+.double-entry-example{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:18px;margin:14px 0}
+.de-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:6px;font-size:13px}
+.de-header{font-weight:600;color:var(--ac);font-size:12px;text-transform:uppercase;border-bottom:1px solid var(--bd);padding-bottom:6px;margin-bottom:8px}
+.de-cr{color:var(--ac3);text-align:right}.de-dr{color:var(--ac2);text-align:right}.de-label{color:#c9d1d9}
+.de-total{border-top:1px solid var(--bd);padding-top:8px;margin-top:4px;font-weight:600}
+@media(max-width:700px){main{padding:20px 16px 60px}header{padding:18px 16px}h1{font-size:20px}.bop-level1{grid-template-columns:1fr 1fr}.entry-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div class="hi">
+  <div class="stag">📚 TCQT – Tài Chính Quốc Tế</div>
+  <h1>Chương 2: <span>Cán Cân Thanh Toán Quốc Tế (BOP)</span></h1>
+  <p class="sub">Kết cấu đầy đủ · Nguyên tắc bút toán · Quan hệ vĩ mô · Bài tập</p>
+  <nav class="tabs">
+    <button class="tb2 on" onclick="show('s1',this)">📌 Khái niệm & Kết cấu</button>
+    <button class="tb2" onclick="show('s2',this)">📊 Các hạng mục chi tiết</button>
+    <button class="tb2" onclick="show('s3',this)">✏️ Nguyên tắc bút toán</button>
+    <button class="tb2" onclick="show('s4',this)">🔗 Quan hệ với vĩ mô</button>
+    <button class="tb2" onclick="show('s5',this)">📈 Hiệu ứng tuyến J & Học thuyết</button>
+    <button class="tb2" onclick="show('s6',this)">🎯 Bài tập luyện tập</button>
+  </nav>
+</div>
+</header>
+<main>
+
+<!-- ===== S1: KHÁI NIỆM ===== -->
+<section class="sec on" id="s1">
+<div class="sec-title">Khái niệm, Điều kiện & Kết cấu BOP</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ib">📖</div>1. Định nghĩa Cán cân thanh toán quốc tế</div>
+  <div class="nb nb-b"><strong>BOP (Balance of Payments)</strong> là một bảng tổng hợp có hệ thống các <em>giao dịch kinh tế</em> giữa <strong>người cư trú</strong> với <strong>người không cư trú</strong> trong một khoảng thời gian nhất định (thường là 1 năm).</div>
+  <p>Hình dung đơn giản: BOP giống như một <strong>cuốn sổ kế toán của quốc gia</strong> — ghi lại toàn bộ thu chi với thế giới bên ngoài. Ai là người ghi sổ? Ngân hàng Trung ương (NHNN).</p>
+  <p style="margin-top:14px;"><strong>4 câu hỏi nền tảng khi lập BOP:</strong></p>
+  <table>
+    <tr><th>Câu hỏi</th><th>Nội dung</th><th>Trả lời cụ thể</th></tr>
+    <tr><td>Giao dịch nào được thống kê?</td><td>Điều kiện để một giao dịch được ghi vào BOP</td><td>Phải là giao dịch giữa <em>người cư trú</em> và <em>người không cư trú</em></td></tr>
+    <tr><td>Thời kỳ lập cán cân?</td><td>Tần suất và kỳ báo cáo</td><td>Tháng, quý, nửa năm, hàng năm</td></tr>
+    <tr><td>Đồng tiền ghi chép?</td><td>Đơn vị tiền tệ dùng trong BOP</td><td>Tùy quốc gia — xem bảng chi tiết bên dưới</td></tr>
+    <tr><td>Nghiên cứu BOP để làm gì?</td><td>Ý nghĩa phân tích</td><td>Đánh giá tỷ giá, sức cạnh tranh, cơ hội KD</td></tr>
+  </table>
+  <div class="sub-title">Đồng tiền sử dụng trong BOP</div>
+  <table>
+    <tr><th>Đối tượng</th><th>Đồng tiền dùng</th><th>Lý do</th></tr>
+    <tr><td>Bất kỳ quốc gia</td><td>Bất kỳ đồng tiền nào</td><td>Về nguyên tắc không có ràng buộc</td></tr>
+    <tr><td>Các nước phát triển</td><td>Nội tệ</td><td>Đồng nội tệ đủ mạnh và ổn định để làm chuẩn</td></tr>
+    <tr><td>Các nước đang phát triển</td><td>Ngoại tệ dùng nhiều nhất trong TTQT (thường là USD)</td><td>Nội tệ biến động nhiều → dùng ngoại tệ mạnh cho chuẩn xác hơn</td></tr>
+    <tr><td>IMF (Quỹ Tiền tệ Quốc tế)</td><td>SDR (Special Drawing Rights)</td><td>SDR là "tiền tệ dự trữ" của IMF, tổng hợp từ nhiều đồng tiền lớn</td></tr>
+  </table>
+  <div class="sub-title">Ý nghĩa của việc nghiên cứu BOP</div>
+  <table>
+    <tr><th>Mục đích</th><th>Giải thích</th></tr>
+    <tr><td>Đánh giá cung cầu tiền tệ & tỷ giá</td><td>BOP thặng dư → cung ngoại tệ tăng → VND có xu hướng lên giá. BOP thâm hụt → ngược lại.</td></tr>
+    <tr><td>Đánh giá khả năng cạnh tranh quốc gia</td><td>Cán cân thương mại cho thấy VN xuất hay nhập siêu — phản ánh sức cạnh tranh hàng hóa</td></tr>
+    <tr><td>Đánh giá cơ hội kinh doanh</td><td>FDI/FII tăng mạnh → môi trường đầu tư hấp dẫn; nợ nước ngoài tăng → cần theo dõi rủi ro</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ig">👤</div>2. Người cư trú vs Người không cư trú</div>
+  <p><strong>Điều kiện để được coi là người cư trú của một nước:</strong></p>
+  <table>
+    <tr><th>Tiêu chí</th><th>Nội dung</th></tr>
+    <tr><td>Thời hạn cư trú</td><td><strong>≥ 12 tháng</strong> tại quốc gia đó</td></tr>
+    <tr><td>Nguồn thu nhập</td><td>Có nguồn thu nhập chính từ nước cư trú</td></tr>
+  </table>
+  <p style="margin-top:14px;"><strong>Theo Pháp lệnh Ngoại hối VN 2005 — Người cư trú của Việt Nam bao gồm:</strong></p>
+  <table>
+    <tr><th>Nhóm</th><th>Đối tượng</th></tr>
+    <tr><td><span class="ba bg">Tổ chức tín dụng</span></td><td>Thành lập và hoạt động tại VN</td></tr>
+    <tr><td><span class="ba bg">Tổ chức kinh tế</span></td><td>Thành lập và hoạt động tại VN (trừ tổ chức tín dụng)</td></tr>
+    <tr><td><span class="ba bg">Cơ quan nhà nước</span></td><td>Lực lượng vũ trang, tổ chức chính trị–xã hội, quỹ xã hội, quỹ từ thiện hoạt động tại VN</td></tr>
+    <tr><td><span class="ba bg">Cơ quan đại diện VN</span></td><td>Đại sứ quán, lãnh sự quán VN <em>ở nước ngoài</em> (vẫn là người cư trú của VN!)</td></tr>
+    <tr><td><span class="ba bg">VP đại diện ở nước ngoài</span></td><td>Của các tổ chức tín dụng, kinh tế, nhà nước VN đặt tại nước ngoài</td></tr>
+    <tr><td><span class="ba bg">Công dân VN</span></td><td>Cư trú tại VN; hoặc ở nước ngoài <strong>&lt; 12 tháng</strong>; hoặc làm tại cơ quan đại diện VN ở nước ngoài và người đi cùng</td></tr>
+    <tr><td><span class="ba bg">Công dân VN đi ngắn hạn</span></td><td>Du lịch, học tập, chữa bệnh, thăm viếng ở nước ngoài</td></tr>
+    <tr><td><span class="ba by">Người nước ngoài</span></td><td>Cư trú tại VN <strong>≥ 12 tháng</strong>, <em>trừ</em>: học tập, chữa bệnh, du lịch, hoặc làm việc cho cơ quan đại diện nước ngoài tại VN</td></tr>
+  </table>
+  <div class="nb nb-y">📌 <strong>2 trường hợp đặc biệt cần nhớ:</strong><br>
+  • <strong>Tổ chức quốc tế</strong> (IMF, WB, UN...) = <strong>người không cư trú của mọi quốc gia</strong><br>
+  • <strong>Công ty đa quốc gia:</strong> Chi nhánh đặt ở nước nào → là người cư trú của nước đó (dù công ty mẹ ở nước khác)</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ip">🗂️</div>3. Kết cấu tổng thể của BOP</div>
+  <div class="bop-tree">
+    <div class="bop-root">BOP = Cán cân thanh toán quốc tế</div>
+    <div class="bop-level1">
+      <div class="bop-l1-item bop-ca">① Cán cân vãng lai<br><small>(Current Account – CA)</small></div>
+      <div class="bop-l1-item bop-kfa">② Cán cân vốn & tài chính<br><small>(Capital & Financial Account – KFA)</small></div>
+      <div class="bop-l1-item bop-err">③ Sai sót thống kê<br><small>(Errors & Omissions – EO)</small></div>
+      <div class="bop-l1-item bop-res">④ Cán cân tổng thể & Dự trữ<br><small>(Overall Balance & Reserves)</small></div>
+    </div>
+  </div>
+  <div class="fm">BOP = CA + KFA + EO = 0 &nbsp;&nbsp;(luôn cân bằng về mặt kế toán)</div>
+  <div class="nb nb-b">💡 <strong>Tại sao BOP luôn = 0?</strong> Vì dùng nguyên tắc bút toán kép (double-entry). Mỗi giao dịch đều ghi đồng thời vào cả bên Có (+) và bên Nợ (−) → tổng luôn triệt tiêu nhau → BOP = 0 về mặt kế toán. <em>Điều thú vị là khi CA thâm hụt, KFA phải thặng dư để bù đắp.</em></div>
+</div>
+</section>
+
+<!-- ===== S2: CÁC HẠNG MỤC ===== -->
+<section class="sec" id="s2">
+<div class="sec-title">Các hạng mục chi tiết trong BOP</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ig">🌊</div>Cán cân vãng lai (Current Account – CA)</div>
+  <p>Phản ánh các giao dịch làm thay đổi <strong>tài sản thuộc quyền sở hữu</strong> — giao dịch mang tính <em>thu nhập</em>.</p>
+  <div class="nb nb-g"><strong>Ý nghĩa tình trạng CA:</strong><br>
+  • CA <strong>thặng dư (dương)</strong> → Quốc gia là <strong>chủ nợ</strong>, có dự trữ ngoại hối lớn → thực lực tài chính mạnh<br>
+  • CA <strong>thâm hụt (âm)</strong> → Quốc gia là <strong>con nợ</strong> → phụ thuộc vốn nước ngoài để bù đắp</div>
+  <div class="sub-title">CA gồm 4 hạng mục con:</div>
+  <table>
+    <tr><th>Hạng mục</th><th>Nội dung</th><th>Bên Có (+)</th><th>Bên Nợ (−)</th></tr>
+    <tr>
+      <td><strong>1. Cán cân thương mại</strong><br><span class="ba bg">Trade Balance</span></td>
+      <td>XNK hàng hóa hữu hình (FOB). Quan trọng nhất với VN.</td>
+      <td>Xuất khẩu hàng hóa</td>
+      <td>Nhập khẩu hàng hóa</td>
+    </tr>
+    <tr>
+      <td><strong>2. Cán cân dịch vụ</strong><br><span class="ba bb">Services Balance</span></td>
+      <td>Du lịch, vận tải, bảo hiểm, tài chính, giáo dục, y tế, viễn thông...</td>
+      <td>XK dịch vụ (người nước ngoài mua DV của VN)</td>
+      <td>NK dịch vụ (người VN dùng DV nước ngoài)</td>
+    </tr>
+    <tr>
+      <td><strong>3. Cán cân thu nhập</strong><br><span class="ba by">Income Balance</span></td>
+      <td>Thu nhập từ lao động (lương, thưởng) và thu nhập đầu tư (lãi suất, cổ tức, lợi nhuận)</td>
+      <td>Người VN nhận thu nhập từ nước ngoài (lương, cổ tức từ đầu tư ra nước ngoài)</td>
+      <td>Người nước ngoài nhận thu nhập từ VN (lương, cổ tức, lợi nhuận chuyển về)</td>
+    </tr>
+    <tr>
+      <td><strong>4. Chuyển giao vãng lai</strong><br><span class="ba bp">Current Transfers</span></td>
+      <td>Các khoản chuyển tiền không hoàn lại: kiều hối, viện trợ nhân đạo, quà tặng...</td>
+      <td>Nhận kiều hối, nhận viện trợ từ nước ngoài</td>
+      <td>Gửi tiền ra nước ngoài, viện trợ cho nước khác</td>
+    </tr>
+  </table>
+  <div class="nb nb-r">🇻🇳 <strong>Phân tích thực tế VN:</strong><br>
+  • <strong>Cán cân thương mại quyết định CA của VN</strong> → VN phụ thuộc nhiều vào XNK hàng hóa → CA bị ảnh hưởng mạnh bởi tỷ giá<br>
+  • <strong>Cán cân thu nhập âm</strong> → VN chi cho nước ngoài nhiều hơn nhận về → VN chưa đầu tư ra nước ngoài nhiều, nhưng nhận nhiều FDI → phải trả cổ tức, lợi nhuận về nước của nhà đầu tư nước ngoài<br>
+  • <strong>2002–2006: Nhập siêu</strong> → Khả năng cạnh tranh hàng hóa còn hạn chế</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ib">💰</div>Cán cân vốn & tài chính (Capital & Financial Account – KFA)</div>
+  <p>Phản ánh các giao dịch làm thay đổi <strong>tài sản thuộc quyền sử dụng</strong> — giao dịch chuyển dịch <em>quyền sở hữu tài sản</em>.</p>
+  <div class="nb nb-b"><strong>Nguyên tắc ghi chép KFA:</strong><br>
+  • <span class="ba bg">Vốn chảy VÀO</span> → ghi <strong>Có (+)</strong> trong KFA → Giảm nắm giữ tài sản nước ngoài <em>hoặc</em> tăng nợ phải trả cho nước ngoài<br>
+  • <span class="ba br">Vốn chảy RA</span> → ghi <strong>Nợ (−)</strong> trong KFA → Tăng nắm giữ tài sản nước ngoài <em>hoặc</em> giảm nợ phải trả nước ngoài</div>
+  <div class="sub-title">KFA gồm các hạng mục:</div>
+  <table>
+    <tr><th>Hạng mục</th><th>Ví dụ vốn chảy VÀO (+)</th><th>Ví dụ vốn chảy RA (−)</th></tr>
+    <tr>
+      <td><strong>Đầu tư trực tiếp (FDI)</strong><br>Tỷ lệ sở hữu ≥ 10%, có quyền kiểm soát</td>
+      <td>Nước ngoài đầu tư trực tiếp vào VN (xây nhà máy, mua cổ phần kiểm soát)</td>
+      <td>DN VN đầu tư trực tiếp ra nước ngoài</td>
+    </tr>
+    <tr>
+      <td><strong>Đầu tư gián tiếp (FII/Portfolio)</strong><br>Tỷ lệ sở hữu &lt; 10%, không kiểm soát</td>
+      <td>Nước ngoài mua cổ phiếu, trái phiếu VN dưới 10%</td>
+      <td>Người VN mua chứng khoán nước ngoài</td>
+    </tr>
+    <tr>
+      <td><strong>Vay nợ &amp; tín dụng thương mại</strong><br>Phân theo kỳ hạn: ngắn hạn (&lt;1 năm), trung-dài hạn (≥1 năm)</td>
+      <td>Chính phủ/DN VN vay tiền nước ngoài</td>
+      <td>VN cho nước ngoài vay</td>
+    </tr>
+    <tr>
+      <td><strong>Chuyển giao vốn</strong></td>
+      <td>Nhận viện trợ phát triển không hoàn lại (ODA vốn)</td>
+      <td>Xóa nợ cho nước khác</td>
+    </tr>
+  </table>
+  <div class="nb nb-r">🇻🇳 <strong>Phân tích thực tế KFA của VN 2007–2008:</strong><br>
+  • <strong>FDI tăng đột biến 2007</strong> → VN gia nhập WTO → mở cửa thị trường tài chính → vốn nước ngoài ồ ạt vào → Cung USD tăng mạnh → VND lên giá → <em>gây khó cho xuất khẩu</em><br>
+  • <strong>FII tăng mạnh 2007–2008</strong> → Nhà đầu tư nước ngoài mua mạnh cổ/trái phiếu VN → tạo <em>bong bóng thị trường tài chính</em><br>
+  • <strong>Vay nợ trung-dài hạn tăng 2007, giảm 2008</strong> → Tốt vì: không cần trả ngay, mang bản chất dài hạn, hỗ trợ dự án phát triển → rủi ro mất thanh khoản thấp<br>
+  • <strong>Vay nợ ngắn hạn tăng mạnh 2008</strong> → Nguy hiểm nếu dùng để đầu tư BĐS hoặc chứng khoán (dùng vốn ngắn hạn cho tài sản dài hạn → rủi ro mất thanh khoản cao)</div>
+  <div class="nb nb-y">📌 <strong>Ví dụ ghi nhận KFA:</strong> Bán cổ phiếu của công ty VN cho nhà đầu tư nước ngoài → <em>Tài sản (cổ phiếu) chuyển ra nước ngoài</em>, nhưng <em>tiền (vốn) chảy vào VN</em> → ghi <strong>Có (+)</strong> trong KFA.</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico iy">❓</div>Sai sót thống kê (Errors & Omissions – EO)</div>
+  <p>Hạng mục "dọn dẹp" của BOP:</p>
+  <table>
+    <tr><th>Chức năng</th><th>Giải thích</th></tr>
+    <tr><td>Phản ánh chênh lệch thống kê</td><td>Sai sót trong quá trình thu thập dữ liệu từ nhiều nguồn khác nhau (hải quan, ngân hàng, NHNN...)</td></tr>
+    <tr><td>Ghi lại giao dịch bị bỏ sót</td><td>Các giao dịch đã xảy ra nhưng không được thống kê vào BOP (VD: kinh tế ngầm, buôn lậu...)</td></tr>
+    <tr><td>Đảm bảo BOP luôn cân bằng</td><td>EO = − (CA + KFA) → bù đắp phần chênh lệch còn lại</td></tr>
+  </table>
+  <div class="nb nb-y">⚠️ <strong>Lưu ý quan trọng:</strong><br>
+  • EO <strong>dương (+)</strong> không có nghĩa là tốt — chỉ là hạng mục bù trừ kế toán, không mang ý nghĩa kinh tế trực tiếp<br>
+  • EO âm cũng không nhất thiết là xấu<br>
+  • EO lớn → chất lượng thống kê kém → nền kinh tế phi chính thức lớn</div>
+</div>
+</section>
+
+<!-- ===== S3: BÚT TOÁN ===== -->
+<section class="sec" id="s3">
+<div class="sec-title">Nguyên tắc Bút toán kép trong BOP</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ig">📋</div>Nguyên tắc 1: Nợ – Có (Debit – Credit)</div>
+  <div class="entry-grid">
+    <div class="entry-col cr">
+      <h4>✅ Bên Có (Credit) — ghi (+)</h4>
+      <ul>
+        <li>Thu tiền từ nước ngoài chảy vào</li>
+        <li>Xuất khẩu hàng hóa/dịch vụ</li>
+        <li>Nhận thu nhập từ đầu tư ở nước ngoài</li>
+        <li>Nhận kiều hối, viện trợ từ nước ngoài</li>
+        <li>Nước ngoài đầu tư vào trong nước (FDI/FII vào)</li>
+        <li>Đi vay nước ngoài</li>
+        <li>Bán tài sản ở nước ngoài (giảm tài sản nước ngoài)</li>
+        <li>Dự trữ ngoại hối giảm (bán dự trữ)</li>
+      </ul>
+    </div>
+    <div class="entry-col dr">
+      <h4>❌ Bên Nợ (Debit) — ghi (−)</h4>
+      <ul>
+        <li>Chi tiền ra nước ngoài</li>
+        <li>Nhập khẩu hàng hóa/dịch vụ</li>
+        <li>Trả thu nhập cho nước ngoài (cổ tức, lãi suất)</li>
+        <li>Gửi kiều hối, viện trợ cho nước ngoài</li>
+        <li>Đầu tư ra nước ngoài (FDI/FII ra)</li>
+        <li>Cho nước ngoài vay</li>
+        <li>Mua tài sản ở nước ngoài (tăng tài sản nước ngoài)</li>
+        <li>Dự trữ ngoại hối tăng (mua dự trữ)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nb nb-r">⚠️ <strong>Điểm hay nhầm — Dự trữ ngoại hối:</strong><br>
+  Dự trữ ngoại hối <strong>tăng</strong> → NHNN mua USD vào → tiền chảy <em>ra</em> (để mua USD) → ghi <strong>Nợ (−)</strong><br>
+  Dự trữ ngoại hối <strong>giảm</strong> → NHNN bán USD → tiền chảy <em>vào</em> → ghi <strong>Có (+)</strong><br>
+  <em>Nghe có vẻ ngược nhưng đúng vì ghi từ góc độ dòng tiền nội tệ ra/vào.</em></div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ib">✏️</div>Nguyên tắc 2: Bút toán kép (Double-Entry Bookkeeping)</div>
+  <p>Mỗi giao dịch được ghi <strong>hai lần</strong>: một lần bên Có (+) và một lần bên Nợ (−) với <em>cùng một giá trị</em>. Tổng = 0.</p>
+  <div class="sub-title">Ví dụ minh họa bút toán kép:</div>
+
+  <div class="double-entry-example">
+    <div class="de-row de-header"><div>Giao dịch</div><div class="de-cr">Bên Có (+)</div><div class="de-dr">Bên Nợ (−)</div></div>
+
+    <div class="de-row"><div class="de-label">1. VN xuất khẩu gạo trị giá 100 triệu USD, nhận tiền ngay</div><div class="de-cr">+100 (Cán cân TM)</div><div class="de-dr">−100 (Tiền chảy vào → tài sản ngoại tệ tăng)</div></div>
+    <div class="nb nb-b" style="font-size:13px;margin:4px 0 12px;">Giải thích: Ghi có vì thu được 100tr USD. Ghi nợ vì tài sản ngoại tệ (USD) tăng lên 100tr — nghĩa là vốn "nằm lại" ở nước ngoài dưới dạng tài sản.</div>
+
+    <div class="de-row"><div class="de-label">2. DN nước ngoài đầu tư FDI vào VN 200 triệu USD</div><div class="de-cr">+200 (Cán cân vốn – FDI vào)</div><div class="de-dr">−200 (Cán cân vãng lai – chi phí xây dựng/mua thiết bị NK)</div></div>
+    <div class="nb nb-b" style="font-size:13px;margin:4px 0 12px;">Giải thích: FDI chảy vào → Có (+200) trong KFA. Nhưng tiền đó dùng để NK máy móc, thiết bị vào VN → Nợ (−200) trong CA.</div>
+
+    <div class="de-row"><div class="de-label">3. Kiều hối 50 triệu USD gửi về VN (nhận tiền mặt)</div><div class="de-cr">+50 (Chuyển giao vãng lai)</div><div class="de-dr">−50 (Tài sản ngoại tệ tăng/Dự trữ ngoại hối tăng)</div></div>
+    <div class="nb nb-b" style="font-size:13px;margin:4px 0 12px;">Giải thích: Kiều hối vào → Có (+50) trong CA. Tiền nhận về dưới dạng USD → tài sản ngoại tệ tăng → Nợ (−50) trong KFA.</div>
+
+    <div class="de-row"><div class="de-label">4. VN nhập khẩu ô tô 80 triệu USD, trả chậm 6 tháng</div><div class="de-cr">+80 (Vay thương mại ngắn hạn – KFA)</div><div class="de-dr">−80 (Nhập khẩu hàng hóa – CA)</div></div>
+    <div class="nb nb-b" style="font-size:13px;margin:4px 0 12px;">Giải thích: NK ô tô → Nợ (−80) trong CA. Nhưng chưa trả tiền → đây là khoản nợ ngắn hạn với nước ngoài → Có (+80) trong KFA.</div>
+
+    <div class="de-row de-total"><div class="de-label">⟹ Tổng BOP</div><div class="de-cr">Tổng Có</div><div class="de-dr">= Tổng Nợ → BOP = 0</div></div>
+  </div>
+  <div class="nb nb-g">✅ <strong>Kiểm tra nhanh:</strong> Trong mỗi giao dịch, số tiền bên Có = số tiền bên Nợ. Khi cộng tất cả → Tổng Có = Tổng Nợ → <strong>BOP luôn = 0</strong>.</div>
+  <div class="sub-title">Bảng tóm tắt nhanh — ghi vào hạng mục nào?</div>
+  <table>
+    <tr><th>Giao dịch</th><th>Hạng mục</th><th>Dấu</th></tr>
+    <tr><td>Xuất khẩu hàng hóa</td><td>Cán cân thương mại (CA)</td><td><span class="ba bg">+</span></td></tr>
+    <tr><td>Nhập khẩu hàng hóa</td><td>Cán cân thương mại (CA)</td><td><span class="ba br">−</span></td></tr>
+    <tr><td>Khách nước ngoài du lịch VN</td><td>Cán cân dịch vụ (CA)</td><td><span class="ba bg">+</span></td></tr>
+    <tr><td>Người VN đi du học nước ngoài</td><td>Cán cân dịch vụ (CA)</td><td><span class="ba br">−</span></td></tr>
+    <tr><td>Cổ tức VN trả cho nhà đầu tư nước ngoài</td><td>Cán cân thu nhập (CA)</td><td><span class="ba br">−</span></td></tr>
+    <tr><td>Lương người VN làm ở nước ngoài gửi về</td><td>Cán cân thu nhập (CA)</td><td><span class="ba bg">+</span></td></tr>
+    <tr><td>Kiều hối nhận từ nước ngoài</td><td>Chuyển giao vãng lai (CA)</td><td><span class="ba bg">+</span></td></tr>
+    <tr><td>Nước ngoài đầu tư FDI vào VN</td><td>Đầu tư trực tiếp (KFA)</td><td><span class="ba bg">+</span></td></tr>
+    <tr><td>DN VN mua cổ phiếu nước ngoài</td><td>Đầu tư gián tiếp (KFA)</td><td><span class="ba br">−</span></td></tr>
+    <tr><td>Chính phủ VN vay nước ngoài</td><td>Vay nợ (KFA)</td><td><span class="ba bg">+</span></td></tr>
+    <tr><td>VN tích lũy thêm dự trữ ngoại hối</td><td>Dự trữ chính thức (KFA)</td><td><span class="ba br">−</span></td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ===== S4: VĨ MÔ ===== -->
+<section class="sec" id="s4">
+<div class="sec-title">Quan hệ BOP với các biến số vĩ mô</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ig">💹</div>1. BOP & Tỷ giá hối đoái</div>
+  <table>
+    <tr><th>Tình trạng BOP</th><th>Tác động lên ngoại tệ</th><th>Tác động lên tỷ giá</th><th>Tác động lên nội tệ</th></tr>
+    <tr><td><span class="ba bg">BOP thặng dư</span><br>(CA + KFA &gt; 0)</td><td>Cung ngoại tệ tăng nhiều hơn cầu</td><td>Tỷ giá giảm (VD: VND/USD giảm)</td><td>Nội tệ <strong>lên giá</strong></td></tr>
+    <tr><td><span class="ba br">BOP thâm hụt</span><br>(CA + KFA &lt; 0)</td><td>Cầu ngoại tệ lớn hơn cung</td><td>Tỷ giá tăng</td><td>Nội tệ <strong>mất giá</strong></td></tr>
+  </table>
+  <div class="nb nb-b">💡 <strong>Vòng phản hồi:</strong> Khi BOP thâm hụt → tỷ giá tăng → NK đắt hơn (giảm NK) → XK rẻ hơn (tăng XK) → CA cải thiện → BOP dần cân bằng lại. Đây là cơ chế tự điều chỉnh của thị trường.</div>
+  <div class="nb nb-r">⚠️ <strong>Nhưng cơ chế này không tức thời!</strong> → Có độ trễ thời gian đáng kể (Hiệu ứng tuyến J — xem tab tiếp theo).</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico iy">📈</div>2. BOP & Lạm phát</div>
+  <p><strong>Tác động của lạm phát lên CA (qua hành vi XNK):</strong></p>
+  <table>
+    <tr><th>Tình huống</th><th>Tác động lên NK</th><th>Tác động lên CA</th></tr>
+    <tr><td>Lạm phát trong nước <strong>cao hơn</strong> nước ngoài</td><td>Hàng NK rẻ hơn tương đối → khuyến khích NK tăng</td><td>CA <strong>xấu đi</strong> (NK tăng, XK giảm vì hàng nội đắt)</td></tr>
+    <tr><td>Lạm phát trong nước <strong>thấp hơn</strong> nước ngoài</td><td>Hàng NK đắt hơn tương đối → thu hẹp NK</td><td>CA <strong>tốt lên</strong> (NK giảm, XK tăng vì hàng nội rẻ)</td></tr>
+  </table>
+  <div class="nb nb-g">💡 Đây chính là kênh truyền dẫn từ lạm phát → CA. Lạm phát tương đối giữa 2 nước ảnh hưởng đến giá hàng hóa → ảnh hưởng đến luồng thương mại → ảnh hưởng đến CA.</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ip">🏦</div>3. BOP & Lãi suất</div>
+  <p><strong>Tác động của lãi suất lên KFA (qua dòng vốn quốc tế):</strong></p>
+  <table>
+    <tr><th>Tình huống</th><th>Tác động lên dòng vốn</th><th>Tác động lên KFA</th></tr>
+    <tr><td>Lãi suất thực trong nước <strong>&gt;</strong> nước ngoài</td><td>Thu hút dòng vốn nước ngoài chảy vào</td><td>KFA <strong>thặng dư</strong></td></tr>
+    <tr><td>Lãi suất thực trong nước <strong>&lt;</strong> nước ngoài</td><td>Dòng vốn chảy ra nước ngoài</td><td>KFA <strong>thâm hụt</strong></td></tr>
+  </table>
+  <div class="nb nb-b">📌 <strong>Lưu ý:</strong> Phải dùng <em>lãi suất THỰC</em> (= lãi suất danh nghĩa − lạm phát) chứ không phải lãi suất danh nghĩa. Nhà đầu tư quốc tế nhìn vào lãi suất thực để quyết định di chuyển vốn.</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ir">📊</div>4. BOP & GDP (Học thuyết Hấp thu)</div>
+  <div class="fm">GDP = C + G + I + X − M<br><br>CA = X − M = GDP − (C + G + I)<br>CA = GDP − Tổng chi tiêu (Absorption)</div>
+  <table>
+    <tr><th>Tình huống</th><th>CA</th><th>Ý nghĩa</th></tr>
+    <tr><td>GDP &gt; Tổng hấp thu (C+G+I)</td><td><span class="ba bg">CA thặng dư</span></td><td>Quốc gia sản xuất nhiều hơn tiêu dùng → xuất siêu → tích lũy tài sản nước ngoài</td></tr>
+    <tr><td>GDP &lt; Tổng hấp thu (C+G+I)</td><td><span class="ba br">CA thâm hụt</span></td><td>Quốc gia tiêu dùng nhiều hơn sản xuất → nhập siêu → phải đi vay hoặc dùng dự trữ</td></tr>
+  </table>
+  <div class="nb nb-p">💡 <strong>Ý nghĩa sâu xa:</strong> Muốn cải thiện CA, có 2 cách:<br>
+  (1) Tăng GDP (tăng sản xuất, năng lực cạnh tranh)<br>
+  (2) Giảm hấp thu (tiết kiệm nhiều hơn, giảm chi tiêu C+G+I)<br>
+  → Phá giá tiền tệ một mình chưa đủ nếu nền kinh tế vẫn tiêu dùng nhiều hơn sản xuất!</div>
+</div>
+</section>
+
+<!-- ===== S5: HIỆU ỨNG J ===== -->
+<section class="sec" id="s5">
+<div class="sec-title">Hiệu ứng Tuyến J & Các học thuyết</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ir">📉</div>Hiệu ứng Tuyến J (J-Curve Effect)</div>
+  <p>Khi một quốc gia <strong>phá giá đồng nội tệ</strong>, người ta kỳ vọng CA sẽ cải thiện ngay lập tức (XK tăng, NK giảm). Nhưng <strong>thực tế không phải vậy</strong>:</p>
+  <div class="jcurve-wrap">
+    <svg class="jcurve-svg" viewBox="0 0 560 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background grid -->
+      <line x1="60" y1="20" x2="60" y2="240" stroke="#30363d" stroke-width="1"/>
+      <line x1="60" y1="140" x2="520" y2="140" stroke="#30363d" stroke-width="1"/>
+      <!-- Axis labels -->
+      <text x="30" y="145" fill="#8b949e" font-size="11" text-anchor="middle" font-family="Be Vietnam Pro">CA</text>
+      <text x="290" y="265" fill="#8b949e" font-size="11" text-anchor="middle" font-family="Be Vietnam Pro">Thời gian</text>
+      <!-- Zero line label -->
+      <text x="50" y="144" fill="#8b949e" font-size="10" text-anchor="end">0</text>
+      <!-- J curve path -->
+      <path d="M 80,140 L 160,140 Q 185,140 200,165 Q 220,195 240,210 Q 270,228 300,215 Q 330,200 360,175 Q 400,145 440,110 Q 470,85 500,60" 
+            stroke="#58a6ff" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <!-- Phá giá point -->
+      <line x1="160" y1="20" x2="160" y2="240" stroke="#f78166" stroke-width="1.5" stroke-dasharray="5,4"/>
+      <text x="163" y="35" fill="#f78166" font-size="11" font-family="Be Vietnam Pro">Phá giá</text>
+      <text x="163" y="47" fill="#f78166" font-size="11" font-family="Be Vietnam Pro">(t₀)</text>
+      <!-- t1 label -->
+      <line x1="270" y1="20" x2="270" y2="240" stroke="#e3b341" stroke-width="1" stroke-dasharray="4,4"/>
+      <text x="273" y="35" fill="#e3b341" font-size="11" font-family="Be Vietnam Pro">t₁</text>
+      <!-- t2 label -->
+      <line x1="390" y1="20" x2="390" y2="240" stroke="#56d364" stroke-width="1" stroke-dasharray="4,4"/>
+      <text x="393" y="35" fill="#56d364" font-size="11" font-family="Be Vietnam Pro">t₂</text>
+      <!-- Annotations -->
+      <text x="195" y="235" fill="#f78166" font-size="11" font-family="Be Vietnam Pro" text-anchor="middle">CA xấu đi</text>
+      <text x="195" y="248" fill="#f78166" font-size="11" font-family="Be Vietnam Pro" text-anchor="middle">(t₀→t₁)</text>
+      <text x="430" y="95" fill="#56d364" font-size="11" font-family="Be Vietnam Pro">CA cải thiện</text>
+      <text x="430" y="108" fill="#56d364" font-size="11" font-family="Be Vietnam Pro">(sau t₂)</text>
+      <!-- Plus / Minus zones -->
+      <text x="45" y="100" fill="#56d364" font-size="12" font-family="Be Vietnam Pro">(+)</text>
+      <text x="45" y="185" fill="#f78166" font-size="12" font-family="Be Vietnam Pro">(−)</text>
+      <!-- J label -->
+      <text x="490" y="55" fill="#58a6ff" font-size="13" font-weight="bold" font-family="Be Vietnam Pro">J</text>
+    </svg>
+  </div>
+  <p><strong>3 giai đoạn của đường tuyến J:</strong></p>
+  <table>
+    <tr><th>Giai đoạn</th><th>Thời điểm</th><th>Điều gì xảy ra</th><th>Lý do</th></tr>
+    <tr>
+      <td><span class="ba br">Xấu đi</span></td>
+      <td>Ngay sau phá giá<br>(t₀ → t₁)</td>
+      <td>CA <strong>thâm hụt nhiều hơn</strong> dù đã phá giá</td>
+      <td><strong>Hiệu ứng giá cả lấn át hiệu ứng khối lượng:</strong> NK ngay lập tức đắt hơn (vì tỷ giá tăng, phải bỏ nhiều nội tệ hơn cho cùng lượng NK). Trong khi đó, XK chưa tăng vì cần thời gian để nhà XK điều chỉnh năng lực sản xuất, ký hợp đồng mới, giao hàng...</td>
+    </tr>
+    <tr>
+      <td><span class="ba by">Phục hồi</span></td>
+      <td>t₁ → t₂</td>
+      <td>CA dần cải thiện, tiến về 0</td>
+      <td>XK bắt đầu tăng (do hàng rẻ hơn đã hấp dẫn nước ngoài), NK bắt đầu giảm (do người tiêu dùng chuyển sang hàng nội địa). <strong>Hiệu ứng khối lượng dần lấn át hiệu ứng giá cả.</strong></td>
+    </tr>
+    <tr>
+      <td><span class="ba bg">Cải thiện</span></td>
+      <td>Sau t₂</td>
+      <td>CA trở nên <strong>thặng dư</strong></td>
+      <td>Hiệu ứng khối lượng đã đủ lớn để vượt qua hiệu ứng giá cả. XK tăng mạnh, NK giảm rõ rệt.</td>
+    </tr>
+  </table>
+  <div class="nb nb-r">🔑 <strong>Kết luận quan trọng:</strong> Phá giá tiền tệ không cải thiện CA ngay lập tức mà cần <strong>thời gian đủ dài</strong>. Thậm chí trong ngắn hạn còn làm tình hình <em>tệ hơn</em> trước khi tốt lên. Đây là lý do phá giá không phải "liều thuốc thần kỳ" và cần phối hợp với nhiều chính sách khác.</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ig">📐</div>Học thuyết Độ co giãn (Elasticity Approach) & Điều kiện Marshall-Lerner</div>
+  <p>Học thuyết này trả lời câu hỏi: <em>Khi nào thì phá giá tiền tệ mới thực sự cải thiện được CA?</em></p>
+  <div class="fm">Điều kiện Marshall-Lerner:<br><br>
+  |e_X| + |e_M| &gt; 1<br><br>
+  e_X = Độ co giãn của cầu XK theo tỷ giá<br>
+  e_M = Độ co giãn của cầu NK theo tỷ giá</div>
+  <div class="nb nb-g"><strong>Giải thích điều kiện Marshall-Lerner:</strong><br>
+  • Tổng độ co giãn của XK và NK theo tỷ giá phải <strong>lớn hơn 1</strong><br>
+  • Nếu thỏa mãn → Phá giá có tác dụng → <strong>Hiệu ứng tuyến J sẽ xảy ra</strong> (xấu trước, tốt sau)<br>
+  • Nếu KHÔNG thỏa mãn (|e_X| + |e_M| ≤ 1) → Phá giá không hiệu quả → CA tiếp tục xấu, không có giai đoạn phục hồi</div>
+  <table>
+    <tr><th>Trường hợp</th><th>Ý nghĩa kinh tế</th></tr>
+    <tr><td>|e_X| lớn</td><td>Cầu hàng XK của nước ngoài rất nhạy cảm với giá → Khi phá giá, hàng rẻ đi → Cầu tăng mạnh → XK tăng mạnh</td></tr>
+    <tr><td>|e_M| lớn</td><td>Cầu NK trong nước rất nhạy cảm với giá → Khi NK đắt lên → Người trong nước giảm NK mạnh</td></tr>
+    <tr><td>|e_X| + |e_M| &lt; 1</td><td>Cả 2 đều co giãn kém → Phá giá không đủ để thay đổi hành vi mua/bán → CA không cải thiện</td></tr>
+  </table>
+  <div class="nb nb-y">📌 <strong>Ứng dụng thực tế:</strong> Trong ngắn hạn, điều kiện Marshall-Lerner thường <em>khó thỏa mãn</em> vì hợp đồng XNK đã ký, thói quen tiêu dùng chưa thay đổi → Đây là nguyên nhân chính của phần đường J đi xuống. Trong dài hạn, khi doanh nghiệp và người tiêu dùng đã thích nghi, điều kiện này dễ thỏa mãn hơn.</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ib">💸</div>Học thuyết Hấp thu (Absorption Approach)</div>
+  <p>Nhìn CA từ góc độ <strong>tổng sản lượng và tổng chi tiêu</strong>:</p>
+  <div class="fm">CA = X − M = Y − A<br><br>
+  Y = GDP (tổng sản lượng / thu nhập quốc dân)<br>
+  A = Absorption = C + G + I (tổng hấp thu / chi tiêu trong nước)<br>
+  CA = Y − A</div>
+  <p><strong>Tác động của phá giá theo học thuyết hấp thu:</strong></p>
+  <table>
+    <tr><th>Kênh tác động</th><th>Diễn giải</th></tr>
+    <tr><td>Tác động trực tiếp lên Y</td><td>Phá giá → XK tăng → tổng cầu tăng → Y tăng. NHƯNG nếu nền kinh tế đã ở mức toàn dụng → Y không tăng thêm được → không cải thiện CA</td></tr>
+    <tr><td>Tác động qua lạm phát</td><td>Phá giá → NK đắt hơn → lạm phát tăng → sức mua thực giảm → A giảm → CA có thể cải thiện</td></tr>
+    <tr><td>Hiệu ứng dự trữ tiền mặt</td><td>Lạm phát → giá trị tiền giảm → người dân tiết kiệm nhiều hơn để bù đắp → A giảm → CA cải thiện</td></tr>
+  </table>
+  <div class="nb nb-p">💡 <strong>Kết luận học thuyết hấp thu:</strong> Phá giá chỉ cải thiện CA nếu <strong>A giảm ít hơn Y tăng</strong>. Nếu phá giá kéo theo lạm phát cao, tiêu dùng không giảm (A không giảm), thì CA có thể không cải thiện — thậm chí xấu hơn.<br>
+  → Cần kết hợp phá giá với <strong>chính sách tài khóa thắt chặt</strong> (giảm G) để đảm bảo A giảm đủ.</div>
+</div>
+
+<div class="card">
+  <div class="ct"><div class="ico ip">🔗</div>Tổng hợp — Mối quan hệ của BOP</div>
+  <table>
+    <tr><th>Biến số vĩ mô</th><th>Tác động lên CA</th><th>Tác động lên KFA</th><th>Tác động lên tỷ giá</th></tr>
+    <tr><td>Lạm phát trong nước tăng</td><td>Xấu đi (NK tăng, XK giảm)</td><td>Trung tính trực tiếp</td><td>Tỷ giá tăng (nội tệ mất giá)</td></tr>
+    <tr><td>Lãi suất thực tăng</td><td>Trung tính trực tiếp</td><td>Cải thiện (vốn vào)</td><td>Tỷ giá giảm (nội tệ lên giá)</td></tr>
+    <tr><td>Thu nhập quốc dân tăng</td><td>Xấu đi (NK tăng)</td><td>Trung tính trực tiếp</td><td>Tỷ giá tăng (nội tệ mất giá)</td></tr>
+    <tr><td>Phá giá nội tệ</td><td>Ngắn hạn: xấu; Dài hạn: tốt (nếu M-L thỏa)</td><td>Có thể giảm FII (rủi ro tỷ giá)</td><td>Là kết quả, không phải nguyên nhân</td></tr>
+    <tr><td>BOP thặng dư</td><td>—</td><td>—</td><td>Tỷ giá giảm (nội tệ lên giá)</td></tr>
+    <tr><td>BOP thâm hụt</td><td>—</td><td>—</td><td>Tỷ giá tăng (nội tệ mất giá)</td></tr>
+  </table>
+</div>
+</section>
+
+<!-- ===== S6: BÀI TẬP ===== -->
+<section class="sec" id="s6">
+<div class="sec-title">Bài tập luyện tập — Tự kiểm tra</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 1 – Phân loại giao dịch BOP</span>
+    Công ty Samsung (Hàn Quốc) đầu tư xây nhà máy tại Bắc Ninh, VN với vốn 500 triệu USD. Giao dịch này được ghi vào đâu trong BOP của Việt Nam?
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,false)">A. Cán cân thương mại (CA) — vì có hàng hóa máy móc được NK vào</button>
+    <button class="ob" onclick="ans(this,true)">B. Cán cân vốn (KFA) — bên Có (+500 triệu USD)</button>
+    <button class="ob" onclick="ans(this,false)">C. Cán cân dịch vụ (CA) — vì đây là dịch vụ đầu tư</button>
+    <button class="ob" onclick="ans(this,false)">D. Sai sót thống kê — vì không thể phân loại rõ ràng</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án B.</strong><br>
+  Samsung (người không cư trú) đưa vốn vào VN dưới dạng FDI → Vốn chảy vào VN → Ghi <strong>Có (+)</strong> trong hạng mục <strong>Đầu tư trực tiếp nước ngoài (FDI)</strong> thuộc <strong>KFA</strong>.<br><br>
+  Bút toán kép: +500 (KFA – FDI vào) và −500 (CA – NK máy móc thiết bị hoặc KFA – tài sản trong nước chuyển sang người nước ngoài).<br>
+  Samsung đầu tư với tỷ lệ sở hữu có kiểm soát → FDI (không phải FII).</div>
+</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 2 – Bút toán kép</span>
+    Một công ty VN xuất khẩu gạo trị giá 10 triệu USD và nhận thanh toán bằng tiền mặt ngay. Hãy xác định bút toán kép đúng trong BOP của VN.
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,false)">A. Có +10tr (CA-Thương mại) và Có +10tr (KFA)</button>
+    <button class="ob" onclick="ans(this,true)">B. Có +10tr (CA-Thương mại) và Nợ −10tr (KFA – tài sản ngoại tệ tăng)</button>
+    <button class="ob" onclick="ans(this,false)">C. Nợ −10tr (CA-Thương mại) và Có +10tr (KFA)</button>
+    <button class="ob" onclick="ans(this,false)">D. Chỉ ghi Có +10tr một lần vào CA là đủ</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án B.</strong><br>
+  <strong>Giao dịch 1:</strong> Xuất khẩu gạo → thu tiền từ nước ngoài → <strong>Có (+10tr)</strong> trong Cán cân thương mại (CA).<br>
+  <strong>Giao dịch 2 (bù trừ):</strong> Nhận 10tr USD → Công ty giờ đang nắm giữ 10tr USD (tài sản nước ngoài tăng) → đây là dòng vốn "chảy ra" dưới dạng tài sản → <strong>Nợ (−10tr)</strong> trong KFA.<br><br>
+  Kiểm tra: +10 + (−10) = 0 ✅ BOP cân bằng.</div>
+</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 3 – Người cư trú</span>
+    Trường hợp nào sau đây là <strong>người cư trú</strong> của Việt Nam?
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,false)">A. Chuyên gia người Nhật làm việc cho Đại sứ quán Nhật tại Hà Nội, đã ở VN 2 năm</button>
+    <button class="ob" onclick="ans(this,false)">B. Sinh viên VN đang học tại Mỹ theo học bổng 4 năm</button>
+    <button class="ob" onclick="ans(this,true)">C. Chi nhánh của tập đoàn Toyota đặt tại VN</button>
+    <button class="ob" onclick="ans(this,false)">D. Văn phòng Đại diện của IMF tại Hà Nội</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án C.</strong><br>
+  <strong>A. Sai:</strong> Người nước ngoài làm cho cơ quan đại diện ngoại giao nước ngoài tại VN → KHÔNG phải người cư trú VN (dù ở lâu hơn 12 tháng — đây là ngoại lệ).<br>
+  <strong>B. Sai:</strong> Sinh viên VN học ở nước ngoài → dù lâu hơn 12 tháng nhưng mục đích là học tập → vẫn là người cư trú VN (theo Pháp lệnh 2005, điểm g).<br>
+  <strong>C. Đúng:</strong> Chi nhánh của Toyota đặt tại VN → người cư trú của VN (dù Toyota là công ty Nhật — công ty đa quốc gia: chi nhánh ở đâu là người cư trú của nước đó).<br>
+  <strong>D. Sai:</strong> Tổ chức quốc tế (IMF) = người không cư trú của mọi quốc gia.</div>
+</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 4 – Hiệu ứng tuyến J</span>
+    Ngay sau khi VN phá giá VND mạnh 5%, điều gì sẽ xảy ra với cán cân thương mại trong ngắn hạn?
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,false)">A. Cải thiện ngay lập tức vì hàng XK rẻ hơn, hàng NK đắt hơn</button>
+    <button class="ob" onclick="ans(this,true)">B. Xấu đi trước vì hiệu ứng giá cả lấn át hiệu ứng khối lượng</button>
+    <button class="ob" onclick="ans(this,false)">C. Không thay đổi vì điều kiện Marshall-Lerner chưa chắc thỏa mãn</button>
+    <button class="ob" onclick="ans(this,false)">D. Tùy thuộc vào tốc độ tăng trưởng GDP</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án B.</strong><br>
+  Đây là phần đầu của <strong>Hiệu ứng tuyến J</strong>:<br>
+  • Ngay sau phá giá, các hợp đồng NK đã ký → vẫn phải mua hàng NK nhưng giờ phải trả <em>nhiều VND hơn</em> cho cùng lượng hàng → kim ngạch NK tính bằng VND tăng<br>
+  • XK chưa tăng kịp vì: cần thời gian tìm khách hàng mới, điều chỉnh năng lực sản xuất, giao hàng...<br>
+  → <strong>Hiệu ứng giá cả (giá NK tăng) lấn át hiệu ứng khối lượng (lượng NK chưa giảm)</strong> → Cán cân xấu đi trong ngắn hạn trước khi cải thiện.</div>
+</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 5 – Điều kiện Marshall-Lerner</span>
+    Độ co giãn của cầu xuất khẩu VN theo tỷ giá = 0,4. Độ co giãn của cầu nhập khẩu VN theo tỷ giá = 0,7. Phá giá VND có cải thiện CA hay không?
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,true)">A. Có — vì |0,4| + |0,7| = 1,1 &gt; 1, thỏa điều kiện Marshall-Lerner</button>
+    <button class="ob" onclick="ans(this,false)">B. Không — vì từng giá trị riêng lẻ đều nhỏ hơn 1</button>
+    <button class="ob" onclick="ans(this,false)">C. Không đủ thông tin để kết luận — cần biết thêm mức độ phá giá</button>
+    <button class="ob" onclick="ans(this,false)">D. Có — nhưng chỉ khi phá giá trên 10%</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án A.</strong><br>
+  Điều kiện Marshall-Lerner: |e_X| + |e_M| &gt; 1<br>
+  Tính: |0,4| + |0,7| = 1,1 &gt; 1 ✅ → Điều kiện THỎA MÃN<br><br>
+  <strong>Kết luận:</strong> Phá giá VND sẽ cải thiện CA trong <em>dài hạn</em>. Trong ngắn hạn, hiệu ứng tuyến J vẫn xảy ra (CA xấu trước), nhưng cuối cùng CA sẽ cải thiện sau khoảng thời gian T2.<br>
+  <em>Lưu ý: Marshall-Lerner là điều kiện CẦN, không phải điều kiện đủ — vẫn cần chính sách hỗ trợ kèm theo.</em></div>
+</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 6 – Phân tích BOP thực tế</span>
+    VN năm X có: CA = −5 tỷ USD và KFA = +7 tỷ USD. BOP tổng thể là bao nhiêu và tác động lên tỷ giá là gì?
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,false)">A. BOP = −5 tỷ → VND mất giá vì CA âm</button>
+    <button class="ob" onclick="ans(this,true)">B. BOP = +2 tỷ → VND có xu hướng lên giá (cung ngoại tệ &gt; cầu)</button>
+    <button class="ob" onclick="ans(this,false)">C. BOP = 0 vì CA + KFA luôn triệt tiêu nhau</button>
+    <button class="ob" onclick="ans(this,false)">D. Không thể kết luận vì thiếu số liệu sai sót thống kê</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án B.</strong><br>
+  BOP tổng thể = CA + KFA = (−5) + (+7) = <strong>+2 tỷ USD (thặng dư)</strong><br><br>
+  <strong>Tác động lên tỷ giá:</strong> BOP thặng dư → Tổng cung ngoại tệ &gt; tổng cầu → Cung USD dư thừa → Áp lực VND <em>lên giá</em> (tỷ giá VND/USD giảm).<br><br>
+  <em>Đây chính là thực tế VN 2007: CA âm do nhập siêu nhưng KFA dương rất mạnh (FDI, FII ồ ạt) → BOP thặng dư → VND lên giá → gây khó cho xuất khẩu.</em></div>
+</div>
+
+<div class="qc">
+  <div class="qq"><span class="qn">Câu 7 – Học thuyết hấp thu</span>
+    Theo học thuyết hấp thu, nếu VN phá giá VND nhưng đồng thời tăng chi tiêu chính phủ (G) mạnh, CA sẽ như thế nào?
+  </div>
+  <div class="opts">
+    <button class="ob" onclick="ans(this,false)">A. CA chắc chắn cải thiện vì phá giá làm tăng xuất khẩu</button>
+    <button class="ob" onclick="ans(this,true)">B. CA có thể không cải thiện vì tổng hấp thu A tăng (do G tăng)</button>
+    <button class="ob" onclick="ans(this,false)">C. CA không thay đổi vì 2 tác động triệt tiêu nhau hoàn toàn</button>
+    <button class="ob" onclick="ans(this,false)">D. CA cải thiện vì GDP tăng do cả 2 tác động cộng gộp</button>
+  </div>
+  <div class="ex">✅ <strong>Đáp án B.</strong><br>
+  Theo học thuyết hấp thu: <strong>CA = Y − A</strong><br>
+  • Phá giá → XK tăng → Y tăng ✅<br>
+  • Tăng G → A = C + G + I tăng ❌<br><br>
+  Nếu A tăng bằng hoặc nhiều hơn Y tăng → CA không cải thiện hoặc xấu hơn.<br><br>
+  <strong>Ý nghĩa:</strong> Muốn phá giá có tác dụng thực sự, cần đi kèm với <em>chính sách tài khóa thắt chặt</em> (giảm G hoặc tăng thuế) để kìm hãm tổng hấp thu A. Phá giá đơn lẻ không đủ!</div>
+</div>
+
+</section>
+</main>
+<script>
+function show(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tb2').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function ans(btn,ok){
+  const qc=btn.closest('.qc');
+  qc.querySelectorAll('.ob').forEach(b=>{
+    b.disabled=true;
+    if(b.onclick.toString().includes(',true'))b.classList.add('ok');
+  });
+  if(!ok)btn.classList.add('no');
+  qc.querySelector('.ex').classList.add('sh');
+}
+</script>
+</body>
+</html>
